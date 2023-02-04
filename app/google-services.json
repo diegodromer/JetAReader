@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "846649578056",
-    "project_id": "jetareader",
-    "storage_bucket": "jetareader.appspot.com"
+    "project_number": "116795208481",
+    "project_id": "jetareader-aa0a9",
+    "storage_bucket": "jetareader-aa0a9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:your_own_id",
+        "mobilesdk_app_id": "1:116795208481:android:8db7b2425209c6a6990460",
         "android_client_info": {
           "package_name": "com.bawp.freader"
         }
       },
       "oauth_client": [
         {
-          "client_id": "your_own_id.apps.googleusercontent.com",
+          "client_id": "116795208481-3ffr38ha50d8mopv38e4hhrt4774q44i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bawp.freader",
+            "certificate_hash": "82c0eefb25b050694268e408d0e3896724cf32fe"
+          }
+        },
+        {
+          "client_id": "116795208481-4qsm60lebh3b8m5hsqvtfetih52is4kd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "your_own_id"
+          "current_key": "AIzaSyCsWkYWyHm49tPIhtENrtxnTyTKQKX5WoI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "your_own_id.apps.googleusercontent.com",
+              "client_id": "116795208481-4qsm60lebh3b8m5hsqvtfetih52is4kd.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
