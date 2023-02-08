@@ -16,16 +16,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.bawp.freader.components.ReaderLogo
+import com.bawp.freader.navigation.ReaderScreens
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
-@Preview
 @Composable
 fun ReaderSplashScreen(
-    navController: NavController = NavController(context = LocalContext.current)
+    navController: NavController
 ) {
 
     val scale = remember {
@@ -44,7 +44,14 @@ fun ReaderSplashScreen(
         )
         delay(2000L)
 
+//        if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty())
+//            navController.navigate(ReaderScreens.LoginScreen.name)
+//        else navController.navigate(ReaderScreens.ReaderHomeScreen.name)
+
+        navController.navigate(ReaderScreens.LoginScreen.name)
     }
+
+
 
     Surface(
         modifier = Modifier
@@ -63,11 +70,7 @@ fun ReaderSplashScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "A. Reader",
-                style = MaterialTheme.typography.h3,
-                color = Color.Red.copy(alpha = 0.5f)
-            )
+            ReaderLogo()
             Spacer(modifier = Modifier.height(15.dp))
             Text(
                 text = "\"Read. Change. Yourself \"",
