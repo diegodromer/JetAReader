@@ -1,6 +1,5 @@
 package com.bawp.freader.repository
 
-import com.bawp.freader.data.DataOrException
 import com.bawp.freader.data.Resource
 import com.bawp.freader.model.Item
 import com.bawp.freader.network.BooksApi
@@ -15,22 +14,22 @@ class BookRepository @Inject constructor(private val api: BooksApi) {
 
             if (itemList.isNotEmpty()) Resource.Loading(data = false)
 
-            Resource.Sucess(data = itemList)
+            Resource.Success(data = itemList)
 
         }catch (exception: Exception){
             Resource.Error(message = exception.message.toString())
         }
     }
 
-    suspend fun getBookInfo(bookId: String) : Resource<Item> {
-
+    suspend fun getBookInfo(bookId: String): Resource<Item> {
         val response = try {
             Resource.Loading(data = true)
             api.getBookInfo(bookId)
-        }catch (exception: Exception) {
+
+        }catch (exception: Exception){
             return Resource.Error(message = "An error occurred ${exception.message.toString()}")
         }
         Resource.Loading(data = false)
-        return Resource.Sucess(data = response)
+        return Resource.Success(data = response)
     }
 }

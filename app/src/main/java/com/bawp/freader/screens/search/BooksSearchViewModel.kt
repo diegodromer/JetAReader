@@ -34,7 +34,7 @@ class BooksSearchViewModel @Inject constructor(private val repository: BookRepos
 
             try {
                 when(val response = repository.getBooks(query)) {
-                    is Resource.Sucess -> {
+                    is Resource.Success -> {
                         list = response.data!!
                         if (list.isNotEmpty()) isLoading = false
                     }

@@ -75,8 +75,15 @@ fun Booklist(
     val listOfBooks = viewModel.list
 
     if (viewModel.isLoading) {
-        LinearProgressIndicator()
-    }else {
+        Row(
+            modifier = Modifier.padding(end = 2.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            LinearProgressIndicator()
+            Text(text = "Loading...")
+        }
+    } else {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(16.dp)
@@ -89,10 +96,15 @@ fun Booklist(
 }
 
 @Composable
-fun BookRow(book: Item, navController: NavController) {
+fun BookRow(
+    book: Item,
+    navController: NavController
+) {
     Card(
         modifier = Modifier
-            .clickable { }
+            .clickable {
+                navController.navigate(ReaderScreens.DetailScreen.name + "/${book.id}")
+            }
             .fillMaxWidth()
             .height(100.dp)
             .padding(3.dp),
@@ -156,7 +168,6 @@ fun SearchForm(
         val keyboardController = LocalSoftwareKeyboardController.current
         val valid = remember(searchQueryState.value) {
             searchQueryState.value.trim().isNotEmpty()
-
         }
 
         InputField(valueState = searchQueryState,
@@ -167,9 +178,7 @@ fun SearchForm(
                 onSearch(searchQueryState.value.trim())
                 searchQueryState.value = ""
                 keyboardController?.hide()
-            })
-
+            }
+        )
     }
-
-
 }
