@@ -20,11 +20,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideFireBookRepository() =
-        FireRepository(
-            queryBook = FirebaseFirestore.getInstance()
-                .collection("books")
-        )
+    fun provideFireBookRepository()
+            = FireRepository(queryBook = FirebaseFirestore.getInstance()
+        .collection("books"))
 
     @Singleton
     @Provides

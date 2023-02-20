@@ -11,10 +11,12 @@ import androidx.navigation.compose.rememberNavController
 import com.bawp.freader.screens.ReaderSplashScreen
 import com.bawp.freader.screens.details.BookDetailsScreen
 import com.bawp.freader.screens.home.Home
+import com.bawp.freader.screens.home.HomeScreenViewModel
 import com.bawp.freader.screens.login.ReaderLoginScreen
 import com.bawp.freader.screens.search.BooksSearchViewModel
 import com.bawp.freader.screens.search.SearchScreen
 import com.bawp.freader.screens.stats.ReaderStatsScreen
+import com.bawp.freader.screens.update.BookUpdateScreen
 
 @ExperimentalComposeUiApi
 @Composable
@@ -37,7 +39,8 @@ fun ReaderNavigation() {
         }
 
         composable(ReaderScreens.ReaderHomeScreen.name) {
-            Home(navController = navController)
+            val homeViewModel = hiltViewModel<HomeScreenViewModel>()
+            Home(navController = navController, viewModel = homeViewModel)
         }
 
         composable(ReaderScreens.SearchScreen.name) {
@@ -46,13 +49,25 @@ fun ReaderNavigation() {
         }
 
         val detailName = ReaderScreens.DetailScreen.name
-        composable("$detailName/{bookId}", arguments = listOf(navArgument("bookId"){
+        composable("$detailName/{bookId}", arguments = listOf(navArgument("bookId") {
             type = NavType.StringType
         })) { backStackEntry ->
             backStackEntry.arguments?.getString("bookId").let {
 
                 BookDetailsScreen(navController = navController, bookId = it.toString())
             }
+        }
+
+        val updateName = ReaderScreens.UpdateScreen.name
+        composable("$updateName/{bookItemId}",
+            arguments = listOf(navArgument("bookItemId") {
+                type = NavType.StringType
+            })) { navBackStackEntry ->
+
+            navBackStackEntry.arguments?.getString("bookItemId").let {
+                BookUpdateScreen(navController = navController, bookItemId = it.toString())
+            }
+
         }
     }
 }

@@ -6,17 +6,13 @@ import com.google.firebase.firestore.PropertyName
 
 data class MBook(
 
-    @Exclude
-    var id: String? = null,
-
+    @Exclude var id: String? = null,
     var title: String? = null,
     var authors: String? = null,
     var notes: String? = null,
-
     @get:PropertyName("book_photo_url")
     @set:PropertyName("book_photo_url")
-    var phoneUrl: String? = null,
-
+    var photoUrl: String? = null,
     var categories: String? = null,
 
     @get:PropertyName("published_date")
@@ -44,5 +40,4 @@ data class MBook(
 
     @get:PropertyName("google_book_id")
     @set:PropertyName("google_book_id")
-    var googleBookId: String? = null
-)
+    var googleBookId: String? = null)
