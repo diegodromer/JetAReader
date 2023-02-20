@@ -4,9 +4,9 @@ import android.view.MotionEvent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalContext
@@ -86,7 +87,8 @@ fun InputField(
     imeAction: ImeAction = ImeAction.Next,
     onAction: KeyboardActions = KeyboardActions.Default
 ) {
-    OutlinedTextField(value = valueState.value,
+    OutlinedTextField(
+        value = valueState.value,
         onValueChange = { valueState.value = it },
         label = { Text(text = labelId) },
         singleLine = isSingleLine,
@@ -124,16 +126,14 @@ fun PasswordInput(
         },
         singleLine = true,
         textStyle = TextStyle(
-            fontSize = 18.sp,
-            color = MaterialTheme.colors.onBackground
+            fontSize = 18.sp, color = MaterialTheme.colors.onBackground
         ),
         modifier = modifier
             .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
             .fillMaxWidth(),
         enabled = enabled,
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Password,
-            imeAction = imeAction
+            keyboardType = KeyboardType.Password, imeAction = imeAction
         ),
         visualTransformation = visualTransformation,
         trailingIcon = {
@@ -150,11 +150,9 @@ fun PasswordVisibility(passwordVisibility: MutableState<Boolean>) {
 
     val visible = passwordVisibility.value
 
-    IconButton(
-        onClick = {
-            passwordVisibility.value = !visible
-        }
-    ) {
+    IconButton(onClick = {
+        passwordVisibility.value = !visible
+    }) {
         Icons.Default.Close
     }
 }
@@ -191,23 +189,28 @@ fun BookRatting(score: Double = 4.5) {
 
 @Composable
 fun ListCard(
-    book: MBook,
-    onPressDetails: (String) -> Unit = {}
+    book: MBook, onPressDetails: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
     val resources = context.resources
+
     val displayMetrics = resources.displayMetrics
+
     val screenWidth = displayMetrics.widthPixels / displayMetrics.density
     val spacing = 10.dp
 
-    Card(
-        shape = RoundedCornerShape(29.dp),
+    Card(shape = RoundedCornerShape(29.dp),
         backgroundColor = Color.White,
         elevation = 6.dp,
         modifier = Modifier
-            .padding(16.dp)
-            .height(242.dp)
-            .width(202.dp)
+            .padding(
+                start = 16.dp,
+                top = 16.dp,
+                end = 5.dp,
+                bottom = 16.dp,
+            )
+            .height(240.dp)
+            .width(152.dp)
             .clickable { onPressDetails.invoke(book.title.toString()) }) {
         Column(
             modifier = Modifier.width(screenWidth.dp - (spacing * 2)),
@@ -250,11 +253,20 @@ fun ListCard(
                 style = MaterialTheme.typography.caption
             )
         }
+
+        val isStartedReading = remember {
+            mutableStateOf(false)
+        }
+
         Row(
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.Bottom
+            horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.Bottom
         ) {
-            RoundedButton(label = "Reading", radius = 70)
+
+            isStartedReading.value = book.startedReading != null
+
+            RoundedButton(
+                label = if (isStartedReading.value) "Reading" else "Not Yet", radius = 70
+            )
         }
     }
 }
@@ -262,18 +274,14 @@ fun ListCard(
 @Preview
 @Composable
 fun RoundedButton(
-    label: String = "Reading",
-    radius: Int = 29,
-    onPress: () -> Unit = {}
+    label: String = "Reading", radius: Int = 29, onPress: () -> Unit = {}
 ) {
     Surface(
         modifier = Modifier.clip(
             RoundedCornerShape(
-                bottomEndPercent = radius,
-                topStartPercent = radius
+                bottomEndPercent = radius, topStartPercent = radius
             )
-        ),
-        color = Color(0xFF92CBDF)
+        ), color = Color(0xFF92CBDF)
     ) {
         Column(
             modifier = Modifier
@@ -286,10 +294,8 @@ fun RoundedButton(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = label,
-                style = TextStyle(
-                    color = Color.White,
-                    fontSize = 15.sp
+                text = label, style = TextStyle(
+                    color = Color.White, fontSize = 15.sp
                 )
             )
         }
@@ -304,57 +310,61 @@ fun ReaderAppBar(
     navController: NavController,
     onBackArrowClicked: () -> Unit = {}
 ) {
-    TopAppBar(
-        title = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                if (showProfile) {
-                    Icon(
-                        imageVector = Icons.Default.Favorite,
-                        contentDescription = "Logo Icon",
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .scale(0.9f)
-                    )
-                }
-                if (icon != null) {
-                    Icon(imageVector = icon, contentDescription = "arrow back",
-                        tint = Color.Red.copy(alpha = 0.7f),
-                        modifier = Modifier.clickable { onBackArrowClicked.invoke() })
-                }
-                Spacer(modifier = Modifier.width(40.dp))
-                Text(
-                    text = title,
-                    color = Color.Red.copy(alpha = 0.7f),
-                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp)
+    TopAppBar(title = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (showProfile) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Logo Icon",
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .scale(0.9f)
                 )
             }
-        },
-        actions = {
-            IconButton(onClick = {
-                    FirebaseAuth.getInstance()
-                        .signOut().run {
-                            navController.navigate(ReaderScreens.LoginScreen.name)
-                    }
-                }) {
-                if (showProfile) Row {
-                    Icon(imageVector = Icons.Filled.Logout,
-                        contentDescription = "Logout"
-                    )
-                } else Box {}
+            if (icon != null) {
+                Icon(imageVector = icon,
+                    contentDescription = "arrow back",
+                    tint = Color.Red.copy(alpha = 0.7f),
+                    modifier = Modifier.clickable { onBackArrowClicked.invoke() })
             }
-        },
-        backgroundColor = Color.Transparent,
-        elevation = 0.dp
+            Spacer(modifier = Modifier.width(40.dp))
+            Text(
+                text = title,
+                color = Color.Red.copy(alpha = 0.7f),
+                style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            )
+        }
+    }, actions = {
+        IconButton(onClick = {
+            FirebaseAuth.getInstance().signOut().run {
+                navController.navigate(ReaderScreens.LoginScreen.name)
+            }
+        }) {
+            if (showProfile) Row {
+                Icon(
+                    imageVector = Icons.Filled.Logout, contentDescription = "Logout"
+                )
+            } else Box {}
+        }
+    }, backgroundColor = Color.Transparent, elevation = 0.dp
     )
 }
 
 @Composable
 fun TitleSection(modifier: Modifier = Modifier, label: String) {
     Surface(
-        modifier = modifier.padding(start = 5.dp, top = 1.dp)
+        modifier = modifier
+            .padding(all = 10.dp),
+        shape = CircleShape,
+        color = Color.White,
+        border = BorderStroke(
+            width = 2.dp,
+            color = Color.LightGray
+        )
     ) {
-        Column {
+        Column (modifier = Modifier.background(Color.LightGray)) {
             Text(
+                modifier = Modifier.padding(10.dp),
                 text = label,
                 fontSize = 19.sp,
                 fontStyle = FontStyle.Normal,
@@ -369,14 +379,10 @@ fun FABContent(onTap: () -> Unit) {
     FloatingActionButton(
         onClick = {
             onTap()
-        },
-        shape = RoundedCornerShape(50.dp),
-        backgroundColor = Color(0xFF92CBDF)
+        }, shape = RoundedCornerShape(50.dp), backgroundColor = Color(0xFF92CBDF)
     ) {
         Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = "Add a Book",
-            tint = Color.White
+            imageVector = Icons.Default.Add, contentDescription = "Add a Book", tint = Color.White
         )
     }
 }
@@ -384,9 +390,7 @@ fun FABContent(onTap: () -> Unit) {
 @ExperimentalComposeUiApi
 @Composable
 fun RatingBar(
-    modifier: Modifier = Modifier,
-    rating: Int,
-    onPressRating: (Int) -> Unit
+    modifier: Modifier = Modifier, rating: Int, onPressRating: (Int) -> Unit
 ) {
 
     var ratingState by remember {
@@ -398,8 +402,7 @@ fun RatingBar(
     }
 
     val size by animateDpAsState(
-        targetValue = if(selected) 42.dp else 34.dp,
-        spring(Spring.DampingRatioMediumBouncy)
+        targetValue = if (selected) 42.dp else 34.dp, spring(Spring.DampingRatioMediumBouncy)
     )
 
     Row(
@@ -419,7 +422,7 @@ fun RatingBar(
                             MotionEvent.ACTION_DOWN -> {
                                 selected = true
                                 onPressRating(i)
-                                ratingState= i
+                                ratingState = i
                             }
                             MotionEvent.ACTION_UP -> {
                                 selected = false
@@ -427,7 +430,7 @@ fun RatingBar(
                         }
                         true
                     },
-                tint = if(i <= ratingState) Color(0xFFFFD700) else Color(0xFFA2ADB1)
+                tint = if (i <= ratingState) Color(0xFFFFD700) else Color(0xFFA2ADB1)
             )
         }
     }
