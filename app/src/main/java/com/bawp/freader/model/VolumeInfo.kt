@@ -4,7 +4,7 @@ data class VolumeInfo(
     val allowAnonLogging: Boolean,
     val authors: List<String>,
     val canonicalVolumeLink: String,
-    val categories: List<String>,
+    val categories: List<String>? = null,
     val contentVersion: String,
     val description: String,
     val imageLinks: ImageLinks,

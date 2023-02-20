@@ -35,8 +35,6 @@ fun Home(navController: NavController,
 ) {
     Scaffold(topBar = {
         ReaderAppBar(title = "A.Reader", navController = navController )
-
-
     },
         floatingActionButton = {
             FABContent{
@@ -52,8 +50,6 @@ fun Home(navController: NavController,
         }
 
     }
-
-
 }
 
 @Composable
@@ -69,14 +65,6 @@ fun HomeContent(navController: NavController, viewModel: HomeScreenViewModel) {
         Log.d("Books", "HomeContent: ${listOfBooks.toString()}")
     }
 
-//    val listOfBooks = listOf(
-//          MBook(id = "dadfa", title = "Hello Again", authors = "All of us", notes = null),
-//        MBook(id = "dadfa", title = " Again", authors = "All of us", notes = null),
-//        MBook(id = "dadfa", title = "Hello ", authors = "The world us", notes = null),
-//        MBook(id = "dadfa", title = "Hello Again", authors = "All of us", notes = null),
-//        MBook(id = "dadfa", title = "Hello Again", authors = "All of us", notes = null)
-//                            )
-    //me @gmail.com
     val email = FirebaseAuth.getInstance().currentUser?.email
     val currentUserName = if (!email.isNullOrEmpty())
         FirebaseAuth.getInstance().currentUser?.email?.split("@")
